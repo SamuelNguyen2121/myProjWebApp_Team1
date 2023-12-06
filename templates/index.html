@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Index Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+</head>
+
+<body>
+    <nav>
+        {% if session.username %}
+            <a href="{{ url_for('home') }}">Home</a>
+        {% else %}
+            <a href="/">Home</a>
+        {% endif %}
+        <a href="/photos">View Photos</a>
+        <a href="/sales">Graph</a>
+        {% if session.username %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+
+        {% if username %}
+            <p style="color: #ADD8E6;">You are logged in as {{ username }}</p>
+        {% else %}
+            <p style="color: #ADD8E6;">You are not logged in.</p>
+        {% endif %}
+    </nav>
+    <header>
+        <h1>PIR Motion Sensor Camera App</h1>
+        <h4>By Malick, Vinicius, Samuel, and Hichem</h4>
+    </header>
+    <h1>Project Description</h1>
+    <p>
+        This project utilizes a PIR (Passive Infrared) motion sensor and a Raspberry Pi camera to detect human presence. Whenever the PIR sensor detects motion, the Raspberry Pi camera captures a photo of the scene.
+        The captured photos are stored in an SQLite database, and you can view all the pictures on one page. The system also generates a graph displaying the time and date of each picture. Clicking on a specific picture allows you to view it in a separate page.
+    </p>
+
+    <footer>
+        <p>&copy; 2023 PIR Motion Sensor App. All rights reserved.</p>
+    </footer>
+</body>
+</html>

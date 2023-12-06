@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+    <title>Chartjs Charts</title>
+</head>
+
+<body>
+    <nav>
+        {% if session.username %}
+            <a href="{{ url_for('home') }}">Home</a>
+        {% else %}
+            <a href="/">Home</a>
+        {% endif %}
+        <a href="/photos">View Photos</a>
+        <a href="/sales">Graph</a>
+        {% if session.username %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+    </nav>
+    <header>
+        <h1>PIR Motion Sensor Camera App</h1>
+        <h4>By Malick, Vinicius, Samuel, and Hichem</h4>
+    </header>
+    <h1>Photos Taken Per Month</h1>
+    <div style="height: 50vh; width: 50%;">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        const labels = {{ labels | tojson}};
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Photos',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ data | tojson}},
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                maintainAspectRatio: false,
+                onClick: function(event, array) {
+                if (array.length > 0) {
+                    var chartElement = array[0];
+                    var label = this.data.labels[chartElement.index];
+                    // Convert month name to month number
+                    var monthNumber = new Date(Date.parse(label +" 1, 2021")).getMonth() + 1;
+                    // Redirect to the photos page with the selected month
+                    window.location.href = '/photos?month=' + monthNumber;
+                    }
+                }
+            }
+        };
+
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+
+    <footer>
+        <p>© 2023 PIR Motion Sensor App. All rights reserved.</p>
+    </footer>
+</body>
+</html>
